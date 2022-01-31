@@ -1,6 +1,7 @@
 package Engine.Models;
 
 public class Cube {
+
     private float[] vertices = {
             //Position              //Colours
             // VO
@@ -19,6 +20,26 @@ public class Cube {
             -0.5f, -0.5f, -0.5f,    0.0f, 0.0f, 0.5f, 1.0f,
             // V7
             0.5f, -0.5f, -0.5f,     0.0f, 0.5f, 0.5f, 1.0f,
+    };
+
+    private float[] colours = {
+            //Colours
+            // VO
+             0.5f, 0.0f, 0.0f, 1.0f,
+            // V1
+            0.0f, 0.5f, 0.0f, 1.0f,
+            // V2
+            0.0f, 0.0f, 0.5f, 1.0f,
+            // V3
+            0.0f, 0.5f, 0.5f, 1.0f,
+            // V4
+            0.5f, 0.0f, 0.0f, 1.0f,
+            // V5
+            0.0f, 0.5f, 0.0f, 1.0f,
+            // V6
+            0.0f, 0.0f, 0.5f, 1.0f,
+            // V7
+             0.0f, 0.5f, 0.5f, 1.0f,
     };
 
     private int[] triangles = {
@@ -42,5 +63,9 @@ public class Cube {
 
     public int[] GetTriangles(){
         return this.triangles;
+    }
+
+    public float[] GetColours(){
+        return this.colours;
     }
 }

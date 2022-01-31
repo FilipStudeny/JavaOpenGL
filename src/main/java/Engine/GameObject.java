@@ -2,8 +2,6 @@ package Engine;
 
 import Engine.Models.Cube;
 import Engine.Models.Mesh;
-import Engine.Models.Square;
-import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
 public class GameObject extends Mesh{
@@ -19,6 +17,7 @@ public class GameObject extends Mesh{
 
         this.SetTriangles(this.cube.GetTriangles());
         this.SetVertices(this.cube.GetVertices());
+        this.SetColours(this.cube.GetColours());
 
         this.position = new Vector3f(0,0,-10);
         this.scale = 5f;

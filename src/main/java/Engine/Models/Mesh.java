@@ -52,11 +52,11 @@ public class Mesh {
     private int VAO_ID;
     private int VBO_ID;
     private int EBO_ID;
+    private int colourVBO_ID;
 
     private float[] vertices;
-
-    //MUST BE IN COUNTERCLOCKWISE ORDER
-    private int[] triangles;
+    private int[] triangles;    //MUST BE IN COUNTERCLOCKWISE ORDER
+    private float[] colours;
 
     //CAMERA
     private float FOV;
@@ -90,6 +90,7 @@ public class Mesh {
     public void SetTriangles(int[] triangles){
         this.triangles = triangles;
     }
+    public void SetColours(float[] colours) { this.colours = colours; }
 
     public void Init(){
 
@@ -164,9 +165,11 @@ public class Mesh {
         VAO_ID = glGenVertexArrays();
         glBindVertexArray(VAO_ID);
 
+
         //Create float buffer of vertices
         FloatBuffer vertexBuffer = MemoryUtil.memAllocFloat(vertices.length);
         vertexBuffer.put(vertices).flip();
+
 
         // GENERATE VBO and upload VertexBuffer
         VBO_ID = glGenBuffers();
@@ -189,6 +192,7 @@ public class Mesh {
         int floatSizeInBytes = 4;
         int vertexSizeInBytes = (positionSize + colorSize) * floatSizeInBytes;
 
+
         glVertexAttribPointer(0, positionSize, GL_FLOAT, false, vertexSizeInBytes, 0);
         glEnableVertexAttribArray(0);
 
@@ -196,6 +200,8 @@ public class Mesh {
         glEnableVertexAttribArray(1);
 
         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+
 
     }
 
