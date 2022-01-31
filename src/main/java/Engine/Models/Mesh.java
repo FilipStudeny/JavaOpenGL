@@ -165,43 +165,42 @@ public class Mesh {
         VAO_ID = glGenVertexArrays();
         glBindVertexArray(VAO_ID);
 
-
+        //POSITION VBO
+        // GENERATE VBO and upload VertexBuffer
+        VBO_ID = glGenBuffers();
         //Create float buffer of vertices
         FloatBuffer vertexBuffer = MemoryUtil.memAllocFloat(vertices.length);
         vertexBuffer.put(vertices).flip();
-
-
-        // GENERATE VBO and upload VertexBuffer
-        VBO_ID = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, VBO_ID);
         glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
-        memFree(vertexBuffer);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 
+        //COLOR VBO
+        //GENERATE VBO and upload colourBuffer
+        colourVBO_ID = glGenBuffers();
+        FloatBuffer colourBuffer = MemoryUtil.memAllocFloat(colours.length);
+        colourBuffer.put(colours).flip();
+        glBindBuffer(GL_ARRAY_BUFFER, colourVBO_ID);
+        glBufferData(GL_ARRAY_BUFFER, colourBuffer, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 4, GL_FLOAT, false, 0,  0);
+
+        //TRIANGLE VBO
         //Create Indices and upload them
+        EBO_ID = glGenBuffers();
         IntBuffer elementBuffer = MemoryUtil.memAllocInt(triangles.length);
         elementBuffer.put(triangles).flip();
-
         //Create EBO
-        EBO_ID = glGenBuffers();
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_ID);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementBuffer, GL_STATIC_DRAW);
 
-        //Create vertex attribute pointers
-        int positionSize = 3;
-        int colorSize = 4;
-        int floatSizeInBytes = 4;
-        int vertexSizeInBytes = (positionSize + colorSize) * floatSizeInBytes;
-
-
-        glVertexAttribPointer(0, positionSize, GL_FLOAT, false, vertexSizeInBytes, 0);
-        glEnableVertexAttribArray(0);
-
-        glVertexAttribPointer(1, colorSize, GL_FLOAT, false, vertexSizeInBytes, positionSize * floatSizeInBytes);
-        glEnableVertexAttribArray(1);
-
+        glBindBuffer(GL_ARRAY_BUFFER,0);
+        glBindVertexArray(0);
         // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-
+        memFree(vertexBuffer);
+        memFree(colourBuffer);
+        memFree(elementBuffer);
 
     }
 

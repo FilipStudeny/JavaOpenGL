@@ -19,7 +19,7 @@ public class GameObject extends Mesh{
         this.SetVertices(this.cube.GetVertices());
         this.SetColours(this.cube.GetColours());
 
-        this.position = new Vector3f(0,0,-10);
+        this.position = new Vector3f(0,0,-15);
         this.scale = 5f;
         this.rotation = new Vector3f(50,50,50);
     }

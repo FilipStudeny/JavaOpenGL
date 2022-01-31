@@ -26,15 +26,14 @@ public class Renderer {
            // gameObject.Init();
             gameObject.SetProjectionMatrix(transformation.GetProjectionMatrix(FOV,width,height,nearPlane,farPlane));
            // gameObject.Init();
+            gameObject.Init();
             this.gameObjects.add(gameObject);
         }
     }
 
     public void RenderObjects(){
-
         for (GameObject gameObject : this.gameObjects){
             //Set worldMatrix for object
-
             Matrix4f worldMatrix = transformation.GetWorldMatrix(
                     gameObject.GetPosition(),
                     gameObject.GetRotation(),
@@ -45,9 +44,7 @@ public class Renderer {
                 rotation = 0;
             }
             gameObject.SetRotation(rotation,rotation,rotation);
-
             gameObject.SetWorldMetrix(worldMatrix);
-            gameObject.Init();
             gameObject.Render();
         }
     }

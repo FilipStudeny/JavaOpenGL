@@ -3,27 +3,27 @@ package Engine.Models;
 public class Cube {
 
     private float[] vertices = {
-            //Position              //Colours
+            //Position
             // VO
-            -0.5f,  0.5f,  0.5f,    0.5f, 0.0f, 0.0f, 1.0f, //Bottom right
+            -0.5f,  0.5f,  0.5f,
             // V1
-            -0.5f, -0.5f,  0.5f,    0.0f, 0.5f, 0.0f, 1.0f, //Top Left
+            -0.5f, -0.5f,  0.5f,
             // V2
-            0.5f, -0.5f,  0.5f,     0.0f, 0.0f, 0.5f, 1.0f, //Top Right
+            0.5f, -0.5f,  0.5f,
             // V3
-            0.5f,  0.5f,  0.5f,     0.0f, 0.5f, 0.5f, 1.0f, //Bottom left
+            0.5f,  0.5f,  0.5f,
             // V4
-            -0.5f,  0.5f, -0.5f,    0.5f, 0.0f, 0.0f, 1.0f,
+            -0.5f,  0.5f, -0.5f,
             // V5
-            0.5f,  0.5f, -0.5f,     0.0f, 0.5f, 0.0f, 1.0f,
+            0.5f,  0.5f, -0.5f,
             // V6
-            -0.5f, -0.5f, -0.5f,    0.0f, 0.0f, 0.5f, 1.0f,
+            -0.5f, -0.5f, -0.5f,
             // V7
-            0.5f, -0.5f, -0.5f,     0.0f, 0.5f, 0.5f, 1.0f,
+            0.5f, -0.5f, -0.5f,
     };
 
     private float[] colours = {
-            //Colours
+            //RED  GREEN BLUE ALPHA
             // VO
              0.5f, 0.0f, 0.0f, 1.0f,
             // V1

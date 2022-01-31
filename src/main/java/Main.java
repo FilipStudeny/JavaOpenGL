@@ -49,7 +49,6 @@ class Window{
         this.width = width;
         fadeColor = false;
 
-
         red = 0.2f;
         blue = 0.3f;
         green = 0.3f;
@@ -89,7 +88,6 @@ class Window{
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         //glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
-
         //Create window and crash if there is an error
         window = glfwCreateWindow(width,height,"LWJGL Window", NULL,NULL);
         if(window == NULL){
@@ -115,28 +113,23 @@ class Window{
             glfwSetWindowPos(window,positionX,positionY);
         }
 
-
         //Make OpenGL context current
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1); // Enable V-sync
         glfwShowWindow(window); // Show the window
 
-
-
         // Sets LWJGL binfing to OpenGL
         GL.createCapabilities();
         glClearColor(1,1,1,1); //Set background color
 
-
-        /*
-        square.SetVertices(square.vertices);
-        square.SetTriangles(square.triangles);
-        square.Init();
-         */
-
         GameObject object1 = new GameObject();
+                object1.SetPosition(5f,0f,-15f);
+        GameObject object2 = new GameObject();
+                object2.SetPosition(-5f,0f,-15f);
+
         ArrayList<GameObject> objects = new ArrayList<GameObject>();
         objects.add(object1);
+        objects.add(object2);
         renderer.InitializeObjects(objects);
 
     }
@@ -161,8 +154,6 @@ class Window{
 
             if(deltaTime >= 0){
                 System.out.println("FPS: " + 1.0f / deltaTime);
-               // square.Render();
-
                 renderer.RenderObjects();
                 FadeToBlack();
             }
