@@ -1,18 +1,25 @@
 package Engine.Models;
 
-public class Square extends Mesh{
+public class Square{
 
-    public float[] vertices = {
+    private float[] vertices = {
             //Position              //Colours
-             0.5f, -0.5f, -10f,       1.0f, 0.0f, 0.0f, 1.0f, //Bottom right
-            -0.5f,  0.5f, -10f,       0.0f, 1.0f, 0.0f, 1.0f, //Top Left
-             0.5f,  0.5f, -10f,       0.0f, 0.0f, 1.0f, 1.0f, //Top Right
-            -0.5f, -0.5f, -10f,       1.0f, 1.0f, 0.0f, 1.0f, //Bottom left
+             50f, -50f, -10f,       1.0f, 0.0f, 0.0f, 1.0f, //Bottom right
+            -50f,  50f, -10f,       0.0f, 1.0f, 0.0f, 1.0f, //Top Left
+             50f,  50f, -10f,       0.0f, 0.0f, 1.0f, 1.0f, //Top Right
+            -50f, -50f, -10f,       1.0f, 1.0f, 0.0f, 1.0f, //Bottom left
     };
 
-    public int[] triangles = {
+    private int[] triangles = {
             2,1,0, //Top right triangle
             0,1,3, //Bottom left triangle
     };
 
+    public float[] GetVertices(){
+        return this.vertices;
+    }
+
+    public int[] GetTriangles(){
+        return this.triangles;
+    }
 }

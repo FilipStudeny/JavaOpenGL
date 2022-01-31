@@ -26,11 +26,12 @@ public class Mesh {
             "\n" +
             "out vec4 fColor;\n" +
             "\n" +
+            "uniform mat4 worldMatrix;\n" +
             "uniform mat4 projectionMatrix;\n" +
             "\n" +
             "void main(){\n" +
             "    fColor = aColor;\n" +
-            "    gl_Position = projectionMatrix * vec4(aPos, 1.0);\n" +
+            "    gl_Position = projectionMatrix * worldMatrix * vec4(aPos, 1.0);\n" +
             "}";
 
     private String fragmentShaderSrc = "" +
@@ -58,20 +59,31 @@ public class Mesh {
     private int[] triangles;
 
     //CAMERA
-    private float FOV = (float) Math.toRadians(60f);
-    private float nearPlane = 0.01f;
-    private float farPlane = 1000.0f;
-    private Matrix4f projectionMatrix;
-    private Map<String, Integer> uniforms = new HashMap<>();
-    int width = 800, height = 600;
+    private float FOV;
+    private float nearPlane;
+    private float farPlane;
+    private int width;
+    private int height;
 
+    private Matrix4f projectionMatrix;
+    private Matrix4f worldMatrix;
+
+    private Map<String, Integer> uniforms = new HashMap<>();
+    private Map<String, Integer> uniformsPosition = new HashMap<>();
     private WorldTransformation transformation;
 
 
-    private Mesh(){
+    public Mesh(){
         this.transformation = new WorldTransformation();
     }
 
+    public void SetRenderSettings(float FOV, float nearPlane, float farPlane, int width, int height){
+        this.FOV = FOV;
+        this.nearPlane = nearPlane;
+        this.farPlane = farPlane;
+        this.width = width;
+        this.height = height;
+    }
     public void SetVertices(float[] vertices){
         this.vertices = vertices;
     }
@@ -81,8 +93,10 @@ public class Mesh {
 
     public void Init(){
 
+        /*
         float aspectRation = (float) width / height;
         projectionMatrix = new Matrix4f().perspective(FOV, aspectRation, nearPlane, farPlane);
+         */
 
         //COMPILE AND LINK SHADERS
         //************
@@ -139,6 +153,9 @@ public class Mesh {
         int uniformLocation = glGetUniformLocation(shaderProgram,"projectionMatrix");
         uniforms.put("projectionMatrix",uniformLocation);
 
+        int uniformPosLocation = glGetUniformLocation(shaderProgram,"worldMatrix");
+        uniformsPosition.put("worldMatrix",uniformPosLocation);
+
         //************
         // Generate VAO, VBO and EBO and send them to GPU
         //************
@@ -187,7 +204,7 @@ public class Mesh {
         //Bind shader program
         glUseProgram(shaderProgram);
         SetUniform("projectionMatrix", projectionMatrix);
-
+        SetUniform2("worldMatrix", worldMatrix);
 
         //Bind VAO currently in use
         glBindVertexArray(VAO_ID);
@@ -214,5 +231,20 @@ public class Mesh {
         }
     }
 
+    void SetUniform2(String uniformName, Matrix4f value){
+        try (MemoryStack stack = MemoryStack.stackPush()) {
+            FloatBuffer fb = stack.mallocFloat(16);
+            value.get(fb);
+            glUniformMatrix4fv(uniformsPosition.get(uniformName), false, fb);
+        }
+    }
+
+    public void SetWorldMetrix(Matrix4f worldMatrix){
+         this.worldMatrix = worldMatrix;
+    }
+
+    public void SetProjectionMatrix(Matrix4f projectionMatrix){
+        this.projectionMatrix = projectionMatrix;
+    }
 
 }

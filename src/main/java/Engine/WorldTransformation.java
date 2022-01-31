@@ -22,10 +22,12 @@ public class WorldTransformation {
     }
 
     public Matrix4f GetWorldMatrix(Vector3f offset, Vector3f rotation, float scale){
-        return worldMatrix.identity().translate(offset)
+       worldMatrix.identity().translate(offset)
                 .rotateX(Math.toRadians(rotation.x))
                 .rotateY(Math.toRadians(rotation.y))
                 .rotateZ(Math.toRadians(rotation.z))
                 .scale(scale);
+
+        return worldMatrix;
     }
 }

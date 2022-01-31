@@ -1,22 +1,30 @@
 package Engine;
 
+import Engine.Models.Cube;
 import Engine.Models.Mesh;
+import Engine.Models.Square;
+import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
-public class GameObject {
-
-    private Mesh mesh;
+public class GameObject extends Mesh{
 
     private float scale;
     private Vector3f position;
     private Vector3f rotation;
 
-    public GameObject(Mesh mesh){
-        this.mesh = new Mesh();
-        this.position = new Vector3f(0,0,0);
-        this.scale = 1f;
-        this.rotation = new Vector3f(0,0,0);
+    private Cube cube;
+
+    public GameObject(){
+        this.cube = new Cube();
+
+        this.SetTriangles(this.cube.GetTriangles());
+        this.SetVertices(this.cube.GetVertices());
+
+        this.position = new Vector3f(0,0,-10);
+        this.scale = 5f;
+        this.rotation = new Vector3f(50,50,50);
     }
+
 
     public Vector3f GetPosition(){
         return this.position;
@@ -40,9 +48,5 @@ public class GameObject {
 
     public void SetScale(float scale){
         this.scale = scale;
-    }
-
-    public Mesh GetMesh(){
-        return mesh;
     }
 }

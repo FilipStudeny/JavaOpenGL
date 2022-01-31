@@ -1,9 +1,11 @@
 
 
+import Engine.GameObject;
 import Engine.Input.KeyboardListener;
 import Engine.Input.MouseListener;
 import Engine.Models.Square;
 import Engine.Models.Triangle;
+import Engine.Renderer;
 import Engine.Time;
 
 import org.lwjgl.glfw.GLFWErrorCallback;
@@ -12,11 +14,11 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.IntBuffer;
+import java.util.ArrayList;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.glClear;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11C.glClearColor;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
@@ -40,8 +42,7 @@ class Window{
 
     public float red,blue,green,alpha;
 
-    private Triangle triangle;
-    private Square square;
+    private Renderer renderer;
 
     public Window(int height, int width){
         this.height = height;
@@ -54,8 +55,7 @@ class Window{
         green = 0.3f;
         alpha = 1f;
 
-        triangle = new Triangle();
-        square = new Square();
+        this.renderer = new Renderer();
     }
 
     public void Run(){
@@ -128,15 +128,22 @@ class Window{
         glClearColor(1,1,1,1); //Set background color
 
 
+        /*
         square.SetVertices(square.vertices);
         square.SetTriangles(square.triangles);
         square.Init();
+         */
 
+        GameObject object1 = new GameObject();
+        ArrayList<GameObject> objects = new ArrayList<GameObject>();
+        objects.add(object1);
+        renderer.InitializeObjects(objects);
 
     }
 
 
     private void Loop(){
+
 
         float frameBeginTime = Time.GetTime();
         float frameEndTime;
@@ -147,12 +154,15 @@ class Window{
 
             glfwPollEvents(); // Poll events -> Event input listeners
             glClearColor(red,green,blue,alpha); //Set background color
+            glClear(GL_DEPTH_BUFFER_BIT);
             glClear(GL_COLOR_BUFFER_BIT); // Tells OpenGL how to clear color buffer
 
 
             if(deltaTime >= 0){
                 System.out.println("FPS: " + 1.0f / deltaTime);
-                square.Render();
+               // square.Render();
+
+                renderer.RenderObjects();
                 FadeToBlack();
             }
 

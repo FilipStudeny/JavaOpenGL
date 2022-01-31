@@ -6,9 +6,12 @@ layout (location=1) in vec4 aColor;
 
 out vec4 fColor;
 
+uniform mat4 worldMatrix;
+uniform mat4 projectionMatrix;
+
 void main(){
     fColor = aColor;
-    gl_Position = vec4(aPos, 1.0);
+    gl_Position = projectionMatrix * worldMatrix * vec4(aPos, 1.0);
 }
 
 #type fragment
