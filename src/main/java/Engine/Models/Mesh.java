@@ -1,6 +1,7 @@
 package Engine.Models;
 
 
+import Engine.WorldTransformation;
 import org.joml.Math;
 import org.joml.Matrix4f;
 import org.lwjgl.system.MemoryStack;
@@ -64,10 +65,16 @@ public class Mesh {
     private Map<String, Integer> uniforms = new HashMap<>();
     int width = 800, height = 600;
 
+    private WorldTransformation transformation;
+
+
+    private Mesh(){
+        this.transformation = new WorldTransformation();
+    }
+
     public void SetVertices(float[] vertices){
         this.vertices = vertices;
     }
-
     public void SetTriangles(int[] triangles){
         this.triangles = triangles;
     }
