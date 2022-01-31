@@ -56,8 +56,6 @@ public class Mesh {
     //MUST BE IN COUNTERCLOCKWISE ORDER
     private int[] triangles;
 
-
-
     //CAMERA
     private float FOV = (float) Math.toRadians(60f);
     private float nearPlane = 0.01f;
