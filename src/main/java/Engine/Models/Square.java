@@ -4,10 +4,10 @@ public class Square extends Mesh{
 
     public float[] vertices = {
             //Position              //Colours
-             0.5f, -0.5f, -2f,       1.0f, 0.0f, 0.0f, 1.0f, //Bottom right
-            -0.5f,  0.5f, -2f,       0.0f, 1.0f, 0.0f, 1.0f, //Top Left
-             0.5f,  0.5f, -2f,       0.0f, 0.0f, 1.0f, 1.0f, //Top Right
-            -0.5f, -0.5f, -2f,       1.0f, 1.0f, 0.0f, 1.0f, //Bottom left
+             0.5f, -0.5f, -10f,       1.0f, 0.0f, 0.0f, 1.0f, //Bottom right
+            -0.5f,  0.5f, -10f,       0.0f, 1.0f, 0.0f, 1.0f, //Top Left
+             0.5f,  0.5f, -10f,       0.0f, 0.0f, 1.0f, 1.0f, //Top Right
+            -0.5f, -0.5f, -10f,       1.0f, 1.0f, 0.0f, 1.0f, //Bottom left
     };
 
     public int[] triangles = {
