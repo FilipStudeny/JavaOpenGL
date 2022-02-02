@@ -50,8 +50,18 @@ public class Renderer {
                 rotation = 0;
             }
 
+            float rotationY = gameObject.GetRotation().y + 1.5f;
+            if ( rotationY > 360 ) {
+                rotationY = 0;
+            }
 
-            gameObject.SetRotation(rotation,rotation,rotation);
+            float rotationZ = gameObject.GetRotation().z + 1.5f;
+            if ( rotationZ > 360 ) {
+                rotationZ = 0;
+            }
+
+
+           gameObject.SetRotation(0,rotationY,0);
             gameObject.SetWorldMetrix(worldMatrix);
             gameObject.Render();
         }

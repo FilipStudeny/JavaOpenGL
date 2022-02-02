@@ -25,8 +25,8 @@ public class GameObject extends Mesh{
         this.triangle = new Triangle();
         this.square = new Square();
 
-        this.SetTriangles(this.square.GetTriangles());
-        this.SetVertices(this.square.GetVertices());
+        this.SetTriangles(this.cube.GetTriangles());
+        this.SetVertices(this.cube.GetVertices());
 
 
         this.position = new Vector3f(0,0,-15);
