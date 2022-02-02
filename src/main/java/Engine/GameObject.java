@@ -2,7 +2,11 @@ package Engine;
 
 import Engine.Models.Cube;
 import Engine.Models.Mesh;
+import Engine.Models.Square;
+import Engine.Models.Triangle;
 import org.joml.Vector3f;
+
+import java.util.PrimitiveIterator;
 
 public class GameObject extends Mesh{
 
@@ -10,18 +14,24 @@ public class GameObject extends Mesh{
     private Vector3f position;
     private Vector3f rotation;
 
+    //BODY
     private Cube cube;
+    private Triangle triangle;
+    private Square square;
+
 
     public GameObject(){
         this.cube = new Cube();
+        this.triangle = new Triangle();
+        this.square = new Square();
 
-        this.SetTriangles(this.cube.GetTriangles());
-        this.SetVertices(this.cube.GetVertices());
-        this.SetColours(this.cube.GetColours());
+        this.SetTriangles(this.square.GetTriangles());
+        this.SetVertices(this.square.GetVertices());
+
 
         this.position = new Vector3f(0,0,-15);
         this.scale = 5f;
-        this.rotation = new Vector3f(50,50,50);
+        this.rotation = new Vector3f(0,0,0);
     }
 
 

@@ -1,12 +1,17 @@
 package Engine.Models;
 
 
+import Engine.Shader;
+import Engine.Texture;
+import Engine.Time;
 import Engine.WorldTransformation;
 import org.joml.Math;
 import org.joml.Matrix4f;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.system.MemoryStack;
 import org.lwjgl.system.MemoryUtil;
 
+import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.HashMap;
@@ -14,238 +19,124 @@ import java.util.Map;
 
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.stb.STBImage.stbi_load;
 import static org.lwjgl.system.MemoryUtil.memFree;
 
 public class Mesh {
 
-    private String vertexShaderSrc = "" +
-            "#version 330 core\n" +
-            "\n" +
-            "layout (location=0) in vec3 aPos;\n" +
-            "layout (location=1) in vec4 aColor;\n" +
-            "\n" +
-            "out vec4 fColor;\n" +
-            "\n" +
-            "uniform mat4 worldMatrix;\n" +
-            "uniform mat4 projectionMatrix;\n" +
-            "\n" +
-            "void main(){\n" +
-            "    fColor = aColor;\n" +
-            "    gl_Position = projectionMatrix * worldMatrix * vec4(aPos, 1.0);\n" +
-            "}";
-
-    private String fragmentShaderSrc = "" +
-            "#version 330 core\n" +
-            "\n" +
-            "in vec4 fColor;\n" +
-            "\n" +
-            "out vec4 Color;\n" +
-            "\n" +
-            "void main(){\n" +
-            "    Color = fColor;\n" +
-            "}";
-
-    private int vertexID;
-    private int fragmentID;
-    private int shaderProgram;
-
     private int VAO_ID;
     private int VBO_ID;
     private int EBO_ID;
-    private int colourVBO_ID;
+
 
     private float[] vertices;
     private int[] triangles;    //MUST BE IN COUNTERCLOCKWISE ORDER
-    private float[] colours;
 
-    //CAMERA
-    private float FOV;
-    private float nearPlane;
-    private float farPlane;
-    private int width;
-    private int height;
 
     private Matrix4f projectionMatrix;
     private Matrix4f worldMatrix;
 
-    private Map<String, Integer> uniforms = new HashMap<>();
-    private Map<String, Integer> uniformsPosition = new HashMap<>();
-    private WorldTransformation transformation;
-
+    private Shader shader;
+    private Texture texture;
 
     public Mesh(){
-        this.transformation = new WorldTransformation();
+        this.shader = new Shader("Assets/Shaders/default.glsl");
+        this.texture = new Texture("src/textures/dorime.png");
     }
 
-    public void SetRenderSettings(float FOV, float nearPlane, float farPlane, int width, int height){
-        this.FOV = FOV;
-        this.nearPlane = nearPlane;
-        this.farPlane = farPlane;
-        this.width = width;
-        this.height = height;
-    }
+
     public void SetVertices(float[] vertices){
         this.vertices = vertices;
     }
     public void SetTriangles(int[] triangles){
         this.triangles = triangles;
     }
-    public void SetColours(float[] colours) { this.colours = colours; }
 
     public void Init(){
 
-        /*
-        float aspectRation = (float) width / height;
-        projectionMatrix = new Matrix4f().perspective(FOV, aspectRation, nearPlane, farPlane);
-         */
-
-        //COMPILE AND LINK SHADERS
-        //************
-        // Vertex Shader
-        //************
-
-        vertexID = glCreateShader(GL_VERTEX_SHADER); //Load shader type
-        glShaderSource(vertexID, vertexShaderSrc); // Pass shader source to GPU
-        glCompileShader(vertexID); // Compile shader
-
-        //Error check in compilation process
-        int success = glGetShaderi(vertexID,GL_COMPILE_STATUS);
-        if(success == GL_FALSE){
-            int lenght = glGetShaderi(vertexID, GL_INFO_LOG_LENGTH);
-            System.out.println("ERROR: 'defaultShader.glsl: \n\t Vertex shader compilation failed !");
-            System.out.println(glGetShaderInfoLog(vertexID,lenght));
-        }
-
-        //************
-        // Fragment Shader
-        //************
-
-        fragmentID = glCreateShader(GL_FRAGMENT_SHADER); //Load shader type
-        glShaderSource(fragmentID, fragmentShaderSrc); // Pass shader source to GPU
-        glCompileShader(fragmentID); // Compile shader
-
-        //Error check in compilation process
-        success = glGetShaderi(fragmentID,GL_COMPILE_STATUS);
-        if(success == GL_FALSE){
-            int lenght = glGetShaderi(fragmentID, GL_INFO_LOG_LENGTH);
-            System.out.println("ERROR: 'defaultShader.glsl: \n\t Vertex shader compilation failed !");
-            System.out.println(glGetShaderInfoLog(fragmentID,lenght));
-        }
-
-
-        //************
-        // Link shaders and Check for errors
-        //************
-
-        shaderProgram = glCreateProgram();
-        glAttachShader(shaderProgram, vertexID);
-        glAttachShader(shaderProgram, fragmentID);
-        glLinkProgram(shaderProgram);
-
-        //Check for linking errors
-        success = glGetProgrami(shaderProgram, GL_LINK_STATUS);
-        if(success == GL_FALSE){
-            int lenght = glGetProgrami(shaderProgram, GL_INFO_LOG_LENGTH);
-            System.out.println("ERROR: 'defaultShader.glsl:' \n\t Linking of shaders failed !");
-            System.out.println(glGetProgramInfoLog(fragmentID,lenght));
-            assert false : "";
-        }
-
-        int uniformLocation = glGetUniformLocation(shaderProgram,"projectionMatrix");
-        uniforms.put("projectionMatrix",uniformLocation);
-
-        int uniformPosLocation = glGetUniformLocation(shaderProgram,"worldMatrix");
-        uniformsPosition.put("worldMatrix",uniformPosLocation);
+        shader.CompileShader();
 
         //************
         // Generate VAO, VBO and EBO and send them to GPU
         //************
 
-        // GENERATE VAO
+        // ============================================================
+        // Generate VAO, VBO, and EBO buffer objects, and send to GPU
+        // ============================================================
         VAO_ID = glGenVertexArrays();
         glBindVertexArray(VAO_ID);
 
-        //POSITION VBO
-        // GENERATE VBO and upload VertexBuffer
-        VBO_ID = glGenBuffers();
-        //Create float buffer of vertices
-        FloatBuffer vertexBuffer = MemoryUtil.memAllocFloat(vertices.length);
+        // Create a float buffer of vertices
+        FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertices.length);
         vertexBuffer.put(vertices).flip();
+
+        // Create VBO upload the vertex buffer
+        VBO_ID = glGenBuffers();
         glBindBuffer(GL_ARRAY_BUFFER, VBO_ID);
         glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 
-        //COLOR VBO
-        //GENERATE VBO and upload colourBuffer
-        colourVBO_ID = glGenBuffers();
-        FloatBuffer colourBuffer = MemoryUtil.memAllocFloat(colours.length);
-        colourBuffer.put(colours).flip();
-        glBindBuffer(GL_ARRAY_BUFFER, colourVBO_ID);
-        glBufferData(GL_ARRAY_BUFFER, colourBuffer, GL_STATIC_DRAW);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 4, GL_FLOAT, false, 0,  0);
-
-        //TRIANGLE VBO
-        //Create Indices and upload them
-        EBO_ID = glGenBuffers();
-        IntBuffer elementBuffer = MemoryUtil.memAllocInt(triangles.length);
+        // Create the indices and upload
+        IntBuffer elementBuffer = BufferUtils.createIntBuffer(triangles.length);
         elementBuffer.put(triangles).flip();
-        //Create EBO
+
+        EBO_ID = glGenBuffers();
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_ID);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementBuffer, GL_STATIC_DRAW);
 
-        glBindBuffer(GL_ARRAY_BUFFER,0);
-        glBindVertexArray(0);
-        // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        // Add the vertex attribute pointers
+        int positionsSize = 3;
+        int colorSize = 4;
+        int UVsize = 2;
+        int vertexSizeBytes = (positionsSize + colorSize + UVsize) * Float.BYTES;
+        glVertexAttribPointer(0, positionsSize, GL_FLOAT, false, vertexSizeBytes, 0);
+        glEnableVertexAttribArray(0);
+
+        glVertexAttribPointer(1, colorSize, GL_FLOAT, false, vertexSizeBytes, Float.BYTES);
+        glEnableVertexAttribArray(1);
+
+        glVertexAttribPointer(2, UVsize, GL_FLOAT, false, vertexSizeBytes, (positionsSize + colorSize) * Float.BYTES);
+        glEnableVertexAttribArray(2);
+
         memFree(vertexBuffer);
-        memFree(colourBuffer);
         memFree(elementBuffer);
+
 
     }
 
     public void Render(){
 
-        //Bind shader program
-        glUseProgram(shaderProgram);
-        SetUniform("projectionMatrix", projectionMatrix);
-        SetUniform2("worldMatrix", worldMatrix);
+        shader.UseShader();
 
+        //SHADER UPLOADS
+        shader.UploadTexture("textureSampler",0); //UPLOAD TEXTURE TO SHADER
+        glActiveTexture(GL_TEXTURE0); //
+        texture.BindTexture(); //BIND TEXTURE
+
+        shader.SetMetrix("projectionMatrix",projectionMatrix);
+        shader.SetMetrix("worldMatrix",worldMatrix);
+        shader.UploadFloat("uTime", Time.GetTime());
         //Bind VAO currently in use
         glBindVertexArray(VAO_ID);
 
         //Enable vertex atribute pointers
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
+
         //Draw triangles
         glDrawElements(GL_TRIANGLES,triangles.length, GL_UNSIGNED_INT,0);
 
         //Unbind everything
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
+
         glBindVertexArray(0);
-        glUseProgram(0);
 
-    }
+        shader.DetachShader();
 
-    void SetUniform(String uniformName, Matrix4f value){
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-            FloatBuffer fb = stack.mallocFloat(16);
-            value.get(fb);
-            glUniformMatrix4fv(uniforms.get(uniformName), false, fb);
-        }
-    }
-
-    void SetUniform2(String uniformName, Matrix4f value){
-        try (MemoryStack stack = MemoryStack.stackPush()) {
-            FloatBuffer fb = stack.mallocFloat(16);
-            value.get(fb);
-            glUniformMatrix4fv(uniformsPosition.get(uniformName), false, fb);
-        }
     }
 
     public void SetWorldMetrix(Matrix4f worldMatrix){
-         this.worldMatrix = worldMatrix;
+        this.worldMatrix = worldMatrix;
     }
 
     public void SetProjectionMatrix(Matrix4f projectionMatrix){

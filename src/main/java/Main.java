@@ -151,7 +151,6 @@ class Window{
             glClearColor(red,green,blue,alpha); //Set background color
             glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT); // Tells OpenGL how to clear color buffer
 
-
             if(deltaTime >= 0){
                 System.out.println("FPS: " + 1.0f / deltaTime);
                 renderer.RenderObjects();
@@ -184,5 +183,6 @@ class Window{
             green = Math.max(green - 0.01f,0);
             alpha = Math.max(alpha - 0.01f,0);
         }
+
     }
 }

@@ -26,7 +26,12 @@ public class Renderer {
            // gameObject.Init();
             gameObject.SetProjectionMatrix(transformation.GetProjectionMatrix(FOV,width,height,nearPlane,farPlane));
            // gameObject.Init();
-            gameObject.Init();
+            try{
+                gameObject.Init();
+            }catch ( Exception e){
+                System.out.println(e);
+            }
+
             this.gameObjects.add(gameObject);
         }
     }
@@ -39,10 +44,13 @@ public class Renderer {
                     gameObject.GetRotation(),
                     gameObject.GetScale()
             );
+
             float rotation = gameObject.GetRotation().x + 1.5f;
             if ( rotation > 360 ) {
                 rotation = 0;
             }
+
+
             gameObject.SetRotation(rotation,rotation,rotation);
             gameObject.SetWorldMetrix(worldMatrix);
             gameObject.Render();

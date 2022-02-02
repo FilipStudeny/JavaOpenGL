@@ -3,16 +3,22 @@ package Engine.Models;
 public class Square{
 
     private float[] vertices = {
-            //Position              //Colours
-             50f, -50f, -10f,       1.0f, 0.0f, 0.0f, 1.0f, //Bottom right
-            -50f,  50f, -10f,       0.0f, 1.0f, 0.0f, 1.0f, //Top Left
-             50f,  50f, -10f,       0.0f, 0.0f, 1.0f, 1.0f, //Top Right
-            -50f, -50f, -10f,       1.0f, 1.0f, 0.0f, 1.0f, //Bottom left
+            //POSITIONS               //COLOURS                  //UV COORDS
+            0.5f, -0.5f, 0.0f,       1.0f, 0.0f, 0.0f, 1.0f,    1,1,// Bottom right
+            -0.5f,  0.5f, 0.0f,       0.0f, 1.0f, 0.0f, 1.0f,   0,0, // Top left
+            0.5f,  0.5f, 0.0f ,      1.0f, 0.0f, 1.0f, 1.0f,    1,0,// Top right
+            -0.5f, -0.5f, 0.0f,       1.0f, 1.0f, 0.0f, 1.0f,   0,1, // Bottom left
+    };
+
+    private float[] colours = {
+            1.0f, 1.0f, 0.0f, 1.0f, //Bottom left
+            1.0f, 0.0f, 0.0f, 1.0f, //Bottom right
+            0.0f, 1.0f, 0.0f, 1.0f, //Top Left
     };
 
     private int[] triangles = {
             2,1,0, //Top right triangle
-            0,1,3, //Bottom left triangle
+             0,1,3, //Bottom left triangle
     };
 
     public float[] GetVertices(){
@@ -22,4 +28,10 @@ public class Square{
     public int[] GetTriangles(){
         return this.triangles;
     }
+
+    public float[] GetColours(){
+        return this.colours;
+    }
+
+
 }
