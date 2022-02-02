@@ -2,7 +2,6 @@ package Engine;
 
 import org.joml.Math;
 import org.joml.Matrix4f;
-
 import java.util.ArrayList;
 
 public class Renderer {
@@ -23,15 +22,8 @@ public class Renderer {
 
     public void InitializeObjects(ArrayList<GameObject> gameObjects){
         for (GameObject gameObject : gameObjects){
-           // gameObject.Init();
             gameObject.SetProjectionMatrix(transformation.GetProjectionMatrix(FOV,width,height,nearPlane,farPlane));
-           // gameObject.Init();
-            try{
-                gameObject.Init();
-            }catch ( Exception e){
-                System.out.println(e);
-            }
-
+            gameObject.Init();
             this.gameObjects.add(gameObject);
         }
     }
@@ -50,18 +42,7 @@ public class Renderer {
                 rotation = 0;
             }
 
-            float rotationY = gameObject.GetRotation().y + 1.5f;
-            if ( rotationY > 360 ) {
-                rotationY = 0;
-            }
-
-            float rotationZ = gameObject.GetRotation().z + 1.5f;
-            if ( rotationZ > 360 ) {
-                rotationZ = 0;
-            }
-
-
-           gameObject.SetRotation(0,rotationY,0);
+            gameObject.SetRotation(rotation,rotation,rotation);
             gameObject.SetWorldMetrix(worldMatrix);
             gameObject.Render();
         }

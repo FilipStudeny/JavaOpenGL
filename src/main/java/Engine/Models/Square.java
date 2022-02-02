@@ -10,12 +10,6 @@ public class Square{
             -0.5f, -0.5f, 0.0f,       1.0f, 1.0f, 0.0f, 1.0f,   0,1, // Bottom left
     };
 
-    private float[] colours = {
-            1.0f, 1.0f, 0.0f, 1.0f, //Bottom left
-            1.0f, 0.0f, 0.0f, 1.0f, //Bottom right
-            0.0f, 1.0f, 0.0f, 1.0f, //Top Left
-    };
-
     private int[] triangles = {
             2,1,0, //Top right triangle
              0,1,3, //Bottom left triangle
@@ -28,10 +22,5 @@ public class Square{
     public int[] GetTriangles(){
         return this.triangles;
     }
-
-    public float[] GetColours(){
-        return this.colours;
-    }
-
 
 }

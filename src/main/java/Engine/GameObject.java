@@ -6,8 +6,6 @@ import Engine.Models.Square;
 import Engine.Models.Triangle;
 import org.joml.Vector3f;
 
-import java.util.PrimitiveIterator;
-
 public class GameObject extends Mesh{
 
     private float scale;
@@ -30,7 +28,7 @@ public class GameObject extends Mesh{
 
 
         this.position = new Vector3f(0,0,-15);
-        this.scale = 5f;
+        this.scale = 3f;
         this.rotation = new Vector3f(0,0,0);
     }
 

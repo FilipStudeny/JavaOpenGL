@@ -1,7 +1,6 @@
 package Engine;
 
 import org.lwjgl.BufferUtils;
-
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 

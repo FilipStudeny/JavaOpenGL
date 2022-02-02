@@ -1,25 +1,14 @@
 package Engine.Models;
 
-
 import Engine.Shader;
 import Engine.Texture;
 import Engine.Time;
-import Engine.WorldTransformation;
-import org.joml.Math;
 import org.joml.Matrix4f;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.system.MemoryStack;
-import org.lwjgl.system.MemoryUtil;
-
-import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
-import static org.lwjgl.stb.STBImage.stbi_load;
 import static org.lwjgl.system.MemoryUtil.memFree;
 
 public class Mesh {

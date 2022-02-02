@@ -2,7 +2,6 @@ package Engine;
 
 import org.joml.*;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.system.MemoryStack;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -34,7 +33,7 @@ public class Shader {
         this.filePath = filePath;
 
         //*************************
-        // NO FUCKIN IDEA WHAT THIS DOES, BUT IT LOADS SHADERS AND MAKES THEM GO VRUUUUUUUUM
+        // NO FUCKIN IDEA HOW THIS WORKS, BUT IT LOADS SHADERS AND MAKES THEM GO VRUUUUUUUUM
         //*************************
 
         try{
@@ -181,7 +180,6 @@ public class Shader {
         UseShader();
         glUniform4f(location,vector.x,vector.y,vector.z,vector.w);
     }
-
 
     public void UploadFloat(String name, float value){
         int location = glGetUniformLocation(shaderProgramID, name);
