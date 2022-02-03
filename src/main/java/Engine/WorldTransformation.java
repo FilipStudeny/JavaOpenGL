@@ -2,18 +2,15 @@ package Engine;
 
 import org.joml.Math;
 import org.joml.Matrix4f;
-import org.joml.Vector2f;
 import org.joml.Vector3f;
 
 public class WorldTransformation {
 
     private Matrix4f projectionMatrix;
-    private Matrix4f worldMatrix;
     private Matrix4f viewMatrix;
     private Matrix4f modelViewMatrix;
 
     public WorldTransformation(){
-        this.worldMatrix = new Matrix4f();
         this.projectionMatrix = new Matrix4f();
         this.viewMatrix = new Matrix4f();
         this.modelViewMatrix = new Matrix4f();
@@ -25,16 +22,6 @@ public class WorldTransformation {
         projectionMatrix.identity();
         projectionMatrix.perspective(FOV, aspectRatio, nearPlane, farPlane);
         return projectionMatrix;
-    }
-
-    public Matrix4f GetWorldMatrix(Vector3f offset, Vector3f rotation, float scale){
-        worldMatrix.identity().translate(offset)
-                .rotateX(Math.toRadians(rotation.x))
-                .rotateY(Math.toRadians(rotation.y))
-                .rotateZ(Math.toRadians(rotation.z))
-                .scale(scale);
-
-        return worldMatrix;
     }
 
     public Matrix4f GetWievMatrix(Camera camera){

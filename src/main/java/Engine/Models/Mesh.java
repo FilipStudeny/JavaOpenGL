@@ -89,7 +89,7 @@ public class Mesh {
 
         memFree(vertexBuffer);
         memFree(elementBuffer);
-        
+
     }
 
     public void Render(){

@@ -43,6 +43,10 @@ public class MouseListener {
         return  get().displacementPosition;
     }
 
+    //******************
+    // NO FUCKIN IDEA HOW THIS WORKS BUT IT DOES SOMEHOW
+    //******************
+
     public static void Input() {
         get().displacementPosition.x = 0;
         get().displacementPosition.y = 0;
