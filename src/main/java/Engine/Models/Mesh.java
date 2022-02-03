@@ -24,6 +24,7 @@ public class Mesh {
 
     private Matrix4f projectionMatrix;
     private Matrix4f worldMatrix;
+    private Matrix4f vieMatrix;
 
     private Shader shader;
     private Texture texture;
@@ -88,8 +89,7 @@ public class Mesh {
 
         memFree(vertexBuffer);
         memFree(elementBuffer);
-
-
+        
     }
 
     public void Render(){
@@ -130,6 +130,10 @@ public class Mesh {
 
     public void SetProjectionMatrix(Matrix4f projectionMatrix){
         this.projectionMatrix = projectionMatrix;
+    }
+
+    public void SetViewMatrix(Matrix4f vieMatrix){
+        this.vieMatrix = vieMatrix;
     }
 
 }

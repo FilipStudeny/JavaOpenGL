@@ -14,36 +14,40 @@ public class Renderer {
 
     ArrayList<GameObject> gameObjects;
     private WorldTransformation transformation;
+    private Camera camera;
 
-    public Renderer(){
+    public Renderer(Camera camera){
         this.transformation = new WorldTransformation();
         this.gameObjects = new ArrayList<GameObject>();
+        this.camera = camera;
     }
 
     public void InitializeObjects(ArrayList<GameObject> gameObjects){
         for (GameObject gameObject : gameObjects){
             gameObject.SetProjectionMatrix(transformation.GetProjectionMatrix(FOV,width,height,nearPlane,farPlane));
+            //Set worldMatrix for object
+
+
             gameObject.Init();
+
             this.gameObjects.add(gameObject);
         }
     }
 
     public void RenderObjects(){
         for (GameObject gameObject : this.gameObjects){
-            //Set worldMatrix for object
-            Matrix4f worldMatrix = transformation.GetWorldMatrix(
-                    gameObject.GetPosition(),
-                    gameObject.GetRotation(),
-                    gameObject.GetScale()
-            );
+
+            Matrix4f viewMatrix = transformation.GetWievMatrix(camera);
+
+            Matrix4f worldMatrix = transformation.GetModelViewMatrix(gameObject,viewMatrix);
+            gameObject.SetWorldMetrix(worldMatrix);
 
             float rotation = gameObject.GetRotation().x + 1.5f;
             if ( rotation > 360 ) {
                 rotation = 0;
             }
-
+            gameObject.SetViewMatrix(viewMatrix);
             gameObject.SetRotation(rotation,rotation,rotation);
-            gameObject.SetWorldMetrix(worldMatrix);
             gameObject.Render();
         }
     }

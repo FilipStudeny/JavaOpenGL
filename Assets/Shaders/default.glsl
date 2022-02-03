@@ -14,7 +14,7 @@ uniform mat4 projectionMatrix;
 void main(){
     fColor = aColor;
     ftextureCoords = textureCoords;
-    gl_Position = projectionMatrix * worldMatrix * vec4(aPos, 1.0);
+    gl_Position = projectionMatrix  * worldMatrix * vec4(aPos, 1.0);
 }
 
 #type fragment

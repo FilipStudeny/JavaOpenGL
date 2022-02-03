@@ -125,11 +125,6 @@ public class Shader {
             assert false : "";
         }
 
-        int uniformLocation = glGetUniformLocation(shaderProgramID,"projectionMatrix");
-        uniforms.put("projectionMatrix",uniformLocation);
-
-        int uniformPosLocation = glGetUniformLocation(shaderProgramID,"worldMatrix");
-        uniformsPosition.put("worldMatrix",uniformPosLocation);
     }
 
     public void UseShader(){
