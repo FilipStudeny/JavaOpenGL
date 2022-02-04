@@ -4,6 +4,8 @@ import Engine.Shader;
 import Engine.Texture;
 import Engine.Time;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -16,10 +18,13 @@ public class Mesh {
     private int VAO_ID;
     private int VBO_ID;
     private int EBO_ID;
+    private int VBO_ID_normals;
 
 
     private float[] vertices;
     private int[] triangles;    //MUST BE IN COUNTERCLOCKWISE ORDER
+    private float[] normals = {1,0,1,0,1};
+    private Vector3f colours = new Vector3f(0,1,0);
 
 
     private Matrix4f projectionMatrix;
@@ -41,6 +46,8 @@ public class Mesh {
     public void SetTriangles(int[] triangles){
         this.triangles = triangles;
     }
+    public void SetNormals(float[] normals) { this.normals = normals; }
+    public void SetColours(Vector3f colours) { this.colours = colours; }
 
     public void Init(){
 
@@ -87,6 +94,7 @@ public class Mesh {
         glVertexAttribPointer(2, UVsize, GL_FLOAT, false, vertexSizeBytes, (positionsSize + colorSize) * Float.BYTES);
         glEnableVertexAttribArray(2);
 
+
         memFree(vertexBuffer);
         memFree(elementBuffer);
 
@@ -104,6 +112,7 @@ public class Mesh {
         shader.SetMetrix("projectionMatrix",projectionMatrix);
         shader.SetMetrix("worldMatrix",worldMatrix);
         shader.UploadFloat("uTime", Time.GetTime());
+
         //Bind VAO currently in use
         glBindVertexArray(VAO_ID);
 
@@ -117,6 +126,7 @@ public class Mesh {
         //Unbind everything
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
+
 
         glBindVertexArray(0);
 

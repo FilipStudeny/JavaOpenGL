@@ -14,24 +14,19 @@ public class GameObject extends Mesh{
 
     //BODY
     private Cube cube;
-    private Triangle triangle;
-    private Square square;
 
 
     public GameObject(){
         this.cube = new Cube();
-        this.triangle = new Triangle();
-        this.square = new Square();
 
         this.SetTriangles(this.cube.GetTriangles());
         this.SetVertices(this.cube.GetVertices());
 
-
         this.position = new Vector3f(0,0,-15);
         this.scale = 3f;
         this.rotation = new Vector3f(0,0,0);
-    }
 
+    }
 
     public Vector3f GetPosition(){
         return this.position;

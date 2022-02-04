@@ -1,14 +1,12 @@
 # Java OpenGL
 
-Creating 3D graphics using the LWJGL library
+Creating 3D graphics using the LWJGL library and Java
 
-Currently contains basic Mouse and Keyboard input listeners and Model object to create other models 
-  - Currently created models Triangle and Square 
+Project contains basic window, basic keyboard and mouse Inputs, extremely simple 1st person camera (However camera won't move in the direction when looking UP or Down)
 
-Future plans:
-1. 2D and 3D camera
-2. Loading custom models
-3. Lights
+
+No future plans for updating this repo
+
 
 ## Learning sources
 1. http://www.opengl-tutorial.org/beginners-tutorials/tutorial-4-a-colored-cube/
@@ -19,3 +17,4 @@ Future plans:
 
 ![tria01](https://user-images.githubusercontent.com/81091191/151694182-57d3471c-852e-4d37-92b1-0c648f85ce17.PNG)
 ![cube01](openGL_cube.PNG)
+![cube02](textPing.PNG)

@@ -38,6 +38,7 @@ public class Camera {
             position.x += (float)Math.sin(Math.toRadians(rotation.y - 90)) * -1.0f * offsetX;
             position.z += (float)Math.cos(Math.toRadians(rotation.y - 90)) * offsetX;
         }
+
         position.y += offsetY;
     }
 
