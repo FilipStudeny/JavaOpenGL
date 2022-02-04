@@ -4,13 +4,11 @@ import Engine.Shader;
 import Engine.Texture;
 import Engine.Time;
 import org.joml.Matrix4f;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.system.MemoryUtil;
-
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.system.MemoryUtil.memFree;
@@ -18,9 +16,7 @@ import static org.lwjgl.system.MemoryUtil.memFree;
 public class Mesh {
 
     private int VAO_ID;
-    private int VBO_ID;
     private int EBO_ID;
-    private int VBO_ID_normals;
 
 
     private float[] vertices;
@@ -54,10 +50,6 @@ public class Mesh {
 
         shader.CompileShader();
 
-        //************
-        // Generate VAO, VBO and EBO and send them to GPU
-        //************
-
         // ============================================================
         // Generate VAO, VBO, and EBO buffer objects, and send to GPU
         // ============================================================
@@ -80,6 +72,7 @@ public class Mesh {
         memFree(elementBuffer);
     }
 
+    //CREATE VBO
     private void CreateVBO(int i, int size, float[] array){
         int ID = glGenBuffers();
         FloatBuffer buffer = MemoryUtil.memAllocFloat(array.length);
@@ -117,11 +110,8 @@ public class Mesh {
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
 
-
         glBindVertexArray(0);
-
         shader.DetachShader();
-
     }
 
     public void SetWorldMetrix(Matrix4f worldMatrix){

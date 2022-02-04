@@ -22,7 +22,6 @@ public class WorldTransformation {
         return projectionMatrix;
     }
 
-
     public Matrix4f GetModelViewMatrix(GameObject gameObject, Matrix4f viewMatrixS){
         Vector3f rotation = gameObject.GetRotation();
         modelViewMatrix.identity().translate(gameObject.GetPosition()).

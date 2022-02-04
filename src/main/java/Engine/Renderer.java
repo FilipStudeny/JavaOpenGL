@@ -12,7 +12,7 @@ public class Renderer {
     private int width = 800;
     private int height = 600;
 
-    ArrayList<GameObject> gameObjects;
+    private ArrayList<GameObject> gameObjects;
     private WorldTransformation transformation;
 
     public Renderer( ){
@@ -23,11 +23,8 @@ public class Renderer {
     public void InitializeObjects(ArrayList<GameObject> gameObjects){
         for (GameObject gameObject : gameObjects){
             gameObject.SetProjectionMatrix(transformation.GetProjectionMatrix(FOV,width,height,nearPlane,farPlane));
-            //Set worldMatrix for object
-
 
             gameObject.Init();
-
             this.gameObjects.add(gameObject);
         }
     }
@@ -36,7 +33,6 @@ public class Renderer {
         for (GameObject gameObject : this.gameObjects){
 
             Matrix4f viewMatrix = Camera.GetLookMatrix();
-
             Matrix4f worldMatrix = transformation.GetModelViewMatrix(gameObject,Camera.GetLookMatrix());
             gameObject.SetWorldMetrix(worldMatrix);
 
@@ -45,7 +41,8 @@ public class Renderer {
                 rotation = 0;
             }
             gameObject.SetViewMatrix(viewMatrix);
-            gameObject.SetRotation(rotation,rotation,rotation);
+            gameObject.SetRotation(90,0,90);
+            gameObject.SetScale(2);
             gameObject.Render();
         }
     }

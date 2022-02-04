@@ -1,10 +1,8 @@
 package Engine;
 
-import Engine.Models.Cube;
 import Engine.Models.Mesh;
-import Engine.Models.Square;
-import Engine.Models.Triangle;
 import org.joml.Vector3f;
+import java.util.ArrayList;
 
 public class GameObject extends Mesh{
 
@@ -12,23 +10,45 @@ public class GameObject extends Mesh{
     private Vector3f position;
     private Vector3f rotation;
 
-    //BODY
-    private Cube cube;
-
+    private ModelLoader modelLoader;
 
     public GameObject(){
-        this.cube = new Cube();
 
-        this.SetTriangles(this.cube.GetTriangles());
-        this.SetVertices(this.cube.GetVertices());
-        this.SetTextureCoords(this.cube.GetTextureCoords());
-        this.SetColours(this.cube.GetColours());
+        //LOAD MODEL
+        this.modelLoader = new ModelLoader();
+        this.modelLoader.LoadModel("House.dae");
 
-        this.position = new Vector3f(0,0,-15);
+        //GET DATA FROM MODEL
+        SetVertices(FloatListToArray(modelLoader.GetVertices()));
+        SetTriangles(IntListToArray(modelLoader.GetFaces()));
+        SetColours(FloatListToArray(modelLoader.GetColours()));
+        SetTextureCoords(FloatListToArray(modelLoader.GetVertices()));
+
+        this.position = new Vector3f(0,0,0);
         this.scale = 3f;
         this.rotation = new Vector3f(0,0,0);
 
     }
+
+    //TRANSFER DATA FROM ARRAYLISTS TO ARRAYS
+    private float[] FloatListToArray(ArrayList<Float> list){
+
+        float[] array = new float[list.size()];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = list.get(i);
+        }
+        return array;
+    }
+
+    private int[] IntListToArray(ArrayList<Integer> list){
+
+        int[] array = new int[list.size()];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = list.get(i);
+        }
+        return array;
+    }
+
 
     public Vector3f GetPosition(){
         return this.position;

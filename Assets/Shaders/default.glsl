@@ -30,7 +30,9 @@ uniform sampler2D textureSampler;
 
 void main(){
 
-    Color = texture(textureSampler,ftextureCoords);
+    Color = fColor;
+    //TEXTURE    Color = texture(textureSampler,ftextureCoords);
+
 
     /* NOISE
     float noise = fract(sin(dot(fColor.xy, vec2(12.9898,78.233))) * 43758.5453);

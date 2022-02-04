@@ -1,23 +1,12 @@
-
-
-import Engine.Camera;
-import Engine.GameObject;
 import Engine.Input.KeyboardListener;
 import Engine.Input.MouseListener;
-import Engine.Models.Square;
-import Engine.Models.Triangle;
-import Engine.Renderer;
 import Engine.Time;
 
-import org.joml.Vector2f;
-import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
-
 import java.nio.IntBuffer;
-import java.util.ArrayList;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.*;
@@ -96,8 +85,6 @@ class Window{
 
         gameManager.SetWindow(window);
 
-
-
         //Set callbacks
         glfwSetCursorPosCallback(window, MouseListener::MouseCursorPositionCallback);
         glfwSetKeyCallback(window,KeyboardListener::KeyCallback);
@@ -147,7 +134,7 @@ class Window{
             glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT); // Tells OpenGL how to clear color buffer
 
             if(deltaTime >= 0){
-                System.out.println("FPS: " + 1.0f / deltaTime);
+               // System.out.println("FPS: " + 1.0f / deltaTime);
 
                 gameManager.LOOP();
 

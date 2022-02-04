@@ -4,8 +4,6 @@ import Engine.GameObject;
 import Engine.Input.KeyboardListener;
 import Engine.Input.MouseListener;
 import Engine.Renderer;
-import org.joml.Vector2f;
-import org.joml.Vector3f;
 
 import java.util.ArrayList;
 
@@ -16,9 +14,7 @@ public class GameManager {
     private long window;
     private Renderer renderer;
 
-
-    private float CAMERA_MOVE_SPEED = 2f;
-    private float MOUSE_SENSITIVITY = 0.1f;
+    private float CAMERA_MOVE_SPEED = 0.5f;
 
     public GameManager(){
         this.renderer = new Renderer();
@@ -30,17 +26,17 @@ public class GameManager {
     public void INIT(){
 
         GameObject object1 = new GameObject();
-        object1.SetPosition(5f,0f,-15f);
+            object1.SetPosition(5f,0f,-15f);
         GameObject object2 = new GameObject();
-        object2.SetPosition(-5f,0f,-15f);
+            object2.SetPosition(-5f,0f,-15f);
         GameObject object3 = new GameObject();
-        object3.SetPosition(-5f,0f,15f);
+            object3.SetPosition(-5f,0f,15f);
         GameObject object4 = new GameObject();
-        object4.SetPosition(-5f,15f,-15f);
+            object4.SetPosition(-5f,15f,-15f);
         GameObject object5 = new GameObject();
-        object5.SetPosition(-5f,-15f,-15f);
+            object5.SetPosition(-5f,-15f,-15f);
         GameObject object6 = new GameObject();
-        object6.SetPosition(10f,0f,15f);
+            object6.SetPosition(10f,0f,15f);
 
         ArrayList<GameObject> objects = new ArrayList<GameObject>();
         objects.add(object1);
