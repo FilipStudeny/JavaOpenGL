@@ -47,7 +47,7 @@ public class Renderer {
                 rotation = 0;
             }
             gameObject.SetViewMatrix(viewMatrix);
-            //gameObject.SetRotation(rotation,rotation,rotation);
+            gameObject.SetRotation(rotation,rotation,rotation);
             gameObject.Render();
         }
     }

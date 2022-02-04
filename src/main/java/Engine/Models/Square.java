@@ -3,11 +3,25 @@ package Engine.Models;
 public class Square{
 
     private float[] vertices = {
-            //POSITIONS               //COLOURS                  //UV COORDS
-            0.5f, -0.5f, 0.0f,       1.0f, 0.0f, 0.0f, 1.0f,    1,1,// Bottom right
-            -0.5f,  0.5f, 0.0f,       0.0f, 1.0f, 0.0f, 1.0f,   0,0, // Top left
-            0.5f,  0.5f, 0.0f ,      1.0f, 0.0f, 1.0f, 1.0f,    1,0,// Top right
-            -0.5f, -0.5f, 0.0f,       1.0f, 1.0f, 0.0f, 1.0f,   0,1, // Bottom left
+            //POSITIONS
+            0.5f, -0.5f, 0.0f,
+            -0.5f,  0.5f, 0.0f,
+            0.5f,  0.5f, 0.0f ,
+            -0.5f, -0.5f, 0.0f,
+    };
+
+    private float[] colours = {
+            1.0f, 0.0f, 0.0f, 1.0f,
+            0.0f, 1.0f, 0.0f, 1.0f,
+            1.0f, 0.0f, 1.0f, 1.0f,
+            1.0f, 1.0f, 0.0f, 1.0f,
+    };
+
+    private float[] textureCoords =  {
+            1,1,
+            0,0,
+            1,0,
+            0,1,
     };
 
     private int[] triangles = {

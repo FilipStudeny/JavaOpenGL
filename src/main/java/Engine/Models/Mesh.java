@@ -7,6 +7,8 @@ import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.system.MemoryUtil;
+
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import static org.lwjgl.opengl.GL20.*;
@@ -23,8 +25,8 @@ public class Mesh {
 
     private float[] vertices;
     private int[] triangles;    //MUST BE IN COUNTERCLOCKWISE ORDER
-    private float[] normals = {1,0,1,0,1};
-    private Vector3f colours = new Vector3f(0,1,0);
+    private float[] textureCoords;
+    private float[] colours;
 
 
     private Matrix4f projectionMatrix;
@@ -39,15 +41,14 @@ public class Mesh {
         this.texture = new Texture("src/textures/dorime.png");
     }
 
-
     public void SetVertices(float[] vertices){
         this.vertices = vertices;
     }
     public void SetTriangles(int[] triangles){
         this.triangles = triangles;
     }
-    public void SetNormals(float[] normals) { this.normals = normals; }
-    public void SetColours(Vector3f colours) { this.colours = colours; }
+    public void SetTextureCoords(float[] textureCoords) { this.textureCoords = textureCoords; }
+    public void SetColours(float[] colours) { this.colours = colours; }
 
     public void Init(){
 
@@ -63,14 +64,10 @@ public class Mesh {
         VAO_ID = glGenVertexArrays();
         glBindVertexArray(VAO_ID);
 
-        // Create a float buffer of vertices
-        FloatBuffer vertexBuffer = BufferUtils.createFloatBuffer(vertices.length);
-        vertexBuffer.put(vertices).flip();
-
-        // Create VBO upload the vertex buffer
-        VBO_ID = glGenBuffers();
-        glBindBuffer(GL_ARRAY_BUFFER, VBO_ID);
-        glBufferData(GL_ARRAY_BUFFER, vertexBuffer, GL_STATIC_DRAW);
+        //VBO GENERATION
+        CreateVBO(0,3,vertices);
+        CreateVBO(1,4,colours);
+        CreateVBO(2,2,textureCoords);
 
         // Create the indices and upload
         IntBuffer elementBuffer = BufferUtils.createIntBuffer(triangles.length);
@@ -80,26 +77,19 @@ public class Mesh {
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_ID);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementBuffer, GL_STATIC_DRAW);
 
-        // Add the vertex attribute pointers
-        int positionsSize = 3;
-        int colorSize = 4;
-        int UVsize = 2;
-        int vertexSizeBytes = (positionsSize + colorSize + UVsize) * Float.BYTES;
-        glVertexAttribPointer(0, positionsSize, GL_FLOAT, false, vertexSizeBytes, 0);
-        glEnableVertexAttribArray(0);
-
-        glVertexAttribPointer(1, colorSize, GL_FLOAT, false, vertexSizeBytes, Float.BYTES);
-        glEnableVertexAttribArray(1);
-
-        glVertexAttribPointer(2, UVsize, GL_FLOAT, false, vertexSizeBytes, (positionsSize + colorSize) * Float.BYTES);
-        glEnableVertexAttribArray(2);
-
-
-        memFree(vertexBuffer);
         memFree(elementBuffer);
-
     }
 
+    private void CreateVBO(int i, int size, float[] array){
+        int ID = glGenBuffers();
+        FloatBuffer buffer = MemoryUtil.memAllocFloat(array.length);
+        buffer.put(array).flip();
+        glBindBuffer(GL_ARRAY_BUFFER, ID);
+        glBufferData(GL_ARRAY_BUFFER, buffer, GL_STATIC_DRAW);
+        glEnableVertexAttribArray(i);
+        glVertexAttribPointer(i, size, GL_FLOAT, false, 0, 0);
+        memFree(buffer);
+    }
     public void Render(){
 
         shader.UseShader();

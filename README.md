@@ -4,8 +4,11 @@ Creating 3D graphics using the LWJGL library and Java
 
 Project contains basic window, basic keyboard and mouse Inputs, extremely simple 1st person camera (However camera won't move in the direction when looking UP or Down)
 
-
-No future plans for updating this repo
+Planned updates 
+1. Code refractor
+2. Model loading
+3. 1st person camera
+4. Lights
 
 
 ## Learning sources

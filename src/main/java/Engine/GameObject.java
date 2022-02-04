@@ -21,6 +21,8 @@ public class GameObject extends Mesh{
 
         this.SetTriangles(this.cube.GetTriangles());
         this.SetVertices(this.cube.GetVertices());
+        this.SetTextureCoords(this.cube.GetTextureCoords());
+        this.SetColours(this.cube.GetColours());
 
         this.position = new Vector3f(0,0,-15);
         this.scale = 3f;
