@@ -14,12 +14,10 @@ public class Renderer {
 
     ArrayList<GameObject> gameObjects;
     private WorldTransformation transformation;
-    private Camera camera;
 
-    public Renderer(Camera camera){
+    public Renderer( ){
         this.transformation = new WorldTransformation();
         this.gameObjects = new ArrayList<GameObject>();
-        this.camera = camera;
     }
 
     public void InitializeObjects(ArrayList<GameObject> gameObjects){
@@ -37,9 +35,9 @@ public class Renderer {
     public void RenderObjects(){
         for (GameObject gameObject : this.gameObjects){
 
-            Matrix4f viewMatrix = transformation.GetWievMatrix(camera);
+            Matrix4f viewMatrix = Camera.GetLookMatrix();
 
-            Matrix4f worldMatrix = transformation.GetModelViewMatrix(gameObject,viewMatrix);
+            Matrix4f worldMatrix = transformation.GetModelViewMatrix(gameObject,Camera.GetLookMatrix());
             gameObject.SetWorldMetrix(worldMatrix);
 
             float rotation = gameObject.GetRotation().x + 1.5f;

@@ -99,6 +99,7 @@ class Window{
 
 
         //Set callbacks
+        glfwSetCursorPosCallback(window, MouseListener::MouseCursorPositionCallback);
         glfwSetKeyCallback(window,KeyboardListener::KeyCallback);
 
         //Center window

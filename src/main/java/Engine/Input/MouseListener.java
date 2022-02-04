@@ -8,16 +8,17 @@ public class MouseListener {
 
     public static MouseListener instance;
 
-    private  Vector2d previousPosition;
-    private  Vector2d currentPosition;
-    private  Vector2f displacementPosition;
+    private float cursorPosX;
+    private float cursorPosY;
 
-    private boolean inWindow = false;
+    private float cursorOffsetX;
+    private float cursorOffsetY;
 
     private MouseListener() {
-        this.previousPosition = new Vector2d(-1, -1);
-        this.currentPosition = new Vector2d(0, 0);
-        this.displacementPosition = new Vector2f();
+        this.cursorPosX = 0;
+        this.cursorPosY = 0;
+        this.cursorOffsetX = 0;
+        this.cursorOffsetY = 0;
     }
 
     public static MouseListener get(){
@@ -27,43 +28,20 @@ public class MouseListener {
         return instance;
     }
 
-    public static void Init(long window) {
-        glfwSetCursorPosCallback(window, (windowHandle, xpos, ypos) -> {
-            get().currentPosition.x = xpos;
-            get().currentPosition.y = ypos;
-        });
+    public static void MouseCursorPositionCallback(long window, double posX, double posY){
+        get().cursorOffsetX = (int)posX - get().cursorPosX;
+        get().cursorOffsetY = (int)posY - get().cursorPosY;
 
-        glfwSetCursorEnterCallback(window, (windowHandle, entered) -> {
-            get().inWindow = entered;
-        });
-
+        get().cursorPosX = (int)posX;
+        get().cursorPosY = (int)posY * -1;
     }
 
-    public static Vector2f GetDisplacementVector() {
-        return  get().displacementPosition;
+    public static float GetCursorPosX(){
+        return get().cursorPosX;
     }
 
-    //******************
-    // NO FUCKIN IDEA HOW THIS WORKS BUT IT DOES SOMEHOW
-    //******************
-
-    public static void Input() {
-        get().displacementPosition.x = 0;
-        get().displacementPosition.y = 0;
-        if ( get().previousPosition.x > 0 &&  get().previousPosition.y > 0 &&  get().inWindow) {
-            double deltax =  get().currentPosition.x -  get().previousPosition.x;
-            double deltay =  get().currentPosition.y -  get().previousPosition.y;
-            boolean rotateX = deltax != 0;
-            boolean rotateY = deltay != 0;
-            if (rotateX) {
-                get().displacementPosition.y = (float) deltax;
-            }
-            if (rotateY) {
-                get().displacementPosition.x = (float) deltay;
-            }
-        }
-        get().previousPosition.x =  get().currentPosition.x;
-        get().previousPosition.y =  get().currentPosition.y;
+    public static float GetCursorPosY(){
+        return get().cursorPosY;
     }
 
 }

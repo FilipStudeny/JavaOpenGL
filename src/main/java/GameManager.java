@@ -15,27 +15,19 @@ public class GameManager {
 
     private long window;
     private Renderer renderer;
-    private Camera camera;
 
-    private Vector3f inputVector;
-    private Vector3f mouseInput;
 
-    private static float CAMERA_POS_STEP = 0.5f;
+    private float CAMERA_MOVE_SPEED = 2f;
     private float MOUSE_SENSITIVITY = 0.1f;
 
     public GameManager(){
-        this.inputVector = new Vector3f();
-        this.mouseInput = new Vector3f();
-        this.camera = new Camera(new Vector3f(0,0,0),new Vector3f(0,0,0));
-        this.renderer = new Renderer(camera);
+        this.renderer = new Renderer();
     }
 
     public void SetWindow(long window){
         this.window = window;
     }
     public void INIT(){
-        //Initialize mouse input
-        MouseListener.Init(window);
 
         GameObject object1 = new GameObject();
         object1.SetPosition(5f,0f,-15f);
@@ -63,47 +55,40 @@ public class GameManager {
     public void LOOP(){
         Input();
 
-        //CAMERA STUFF
-        MouseListener.Init(window);
-        MouseListener.Input();
-
-        camera.movePosition(inputVector.x * CAMERA_POS_STEP, inputVector.y * CAMERA_POS_STEP, inputVector.z * CAMERA_POS_STEP);
-        Vector2f cameraRotation = MouseListener.GetDisplacementVector();
-        camera.moveRotation(cameraRotation.x * MOUSE_SENSITIVITY, cameraRotation.y * MOUSE_SENSITIVITY,0);
-
         renderer.RenderObjects();
     }
 
     void Input(){
-        this.inputVector.set(0,0,0);
 
-        if(KeyboardListener.isKeyPressed(GLFW_KEY_W)){
-            inputVector.z = -1;
-        }else if(KeyboardListener.isKeyPressed(GLFW_KEY_S)){
-            inputVector.z = 1;
+        Camera.SetLookDirection(MouseListener.GetCursorPosX() * -0.1f, MouseListener.GetCursorPosY() * 0.1f );
+
+        if(KeyboardListener.isKeyPressed(GLFW_KEY_W)) {
+            Camera.TranslateAlongYaw(0,0,-CAMERA_MOVE_SPEED);
+        }
+
+        if(KeyboardListener.isKeyPressed(GLFW_KEY_D)){
+            Camera.TranslateAlongYaw(CAMERA_MOVE_SPEED,0,0);
         }
 
         if(KeyboardListener.isKeyPressed(GLFW_KEY_A)){
-            inputVector.x = -1;
-        }else if(KeyboardListener.isKeyPressed(GLFW_KEY_D)){
-            inputVector.x = 1;
+            Camera.TranslateAlongYaw(-CAMERA_MOVE_SPEED,0,0);
         }
 
-        if(KeyboardListener.isKeyPressed(GLFW_KEY_Q)){
-            inputVector.y = -1;
-        }else if(KeyboardListener.isKeyPressed(GLFW_KEY_E)){
-            inputVector.y = 1;
+        if(KeyboardListener.isKeyPressed(GLFW_KEY_S)){
+            Camera.TranslateAlongYaw(0,0,CAMERA_MOVE_SPEED);
         }
 
+        if(KeyboardListener.isKeyPressed(GLFW_KEY_E)){
+            Camera.Translate(0,CAMERA_MOVE_SPEED,0);
+        }
+
+        if (KeyboardListener.isKeyPressed(GLFW_KEY_Q)){
+            Camera.Translate(0,-CAMERA_MOVE_SPEED,0);
+        }
 
         if(KeyboardListener.isKeyPressed(GLFW_KEY_ESCAPE)){
             glfwSetWindowShouldClose(window,true);
         }
 
-        if(KeyboardListener.isKeyPressed(GLFW_KEY_RIGHT)){
-            mouseInput.y = 1;
-        }else if(KeyboardListener.isKeyPressed(GLFW_KEY_LEFT)){
-            mouseInput.y = -1;
-        }
     }
 }
