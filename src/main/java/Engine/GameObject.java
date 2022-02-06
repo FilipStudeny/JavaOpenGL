@@ -1,7 +1,10 @@
 package Engine;
 
+import Engine.Models.Cube;
 import Engine.Models.Mesh;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
+
 import java.util.ArrayList;
 
 public class GameObject extends Mesh{
@@ -11,18 +14,24 @@ public class GameObject extends Mesh{
     private Vector3f rotation;
 
     private ModelLoader modelLoader;
+    private Material material;
 
     public GameObject(){
 
         //LOAD MODEL
+        this.material = new Material();
         this.modelLoader = new ModelLoader();
         this.modelLoader.LoadModel("House.dae");
+
+        SetMaterial(this.material);
 
         //GET DATA FROM MODEL
         SetVertices(FloatListToArray(modelLoader.GetVertices()));
         SetTriangles(IntListToArray(modelLoader.GetFaces()));
         SetColours(FloatListToArray(modelLoader.GetColours()));
         SetTextureCoords(FloatListToArray(modelLoader.GetVertices()));
+        SetNormals(FloatListToArray(modelLoader.GetNormals()));
+
 
         this.position = new Vector3f(0,0,0);
         this.scale = 3f;
@@ -73,4 +82,10 @@ public class GameObject extends Mesh{
     public void SetScale(float scale){
         this.scale = scale;
     }
+
+    public Material GetMaterial() { return this.material; }
+
+
+
+
 }

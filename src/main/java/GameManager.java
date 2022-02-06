@@ -26,8 +26,8 @@ public class GameManager {
     public void INIT(){
 
         GameObject object1 = new GameObject();
-            object1.SetPosition(5f,0f,-15f);
-        GameObject object2 = new GameObject();
+            object1.SetPosition(0f,0f,-20f);
+      /*  GameObject object2 = new GameObject();
             object2.SetPosition(-5f,0f,-15f);
         GameObject object3 = new GameObject();
             object3.SetPosition(-5f,0f,15f);
@@ -37,14 +37,14 @@ public class GameManager {
             object5.SetPosition(-5f,-15f,-15f);
         GameObject object6 = new GameObject();
             object6.SetPosition(10f,0f,15f);
-
+*/
         ArrayList<GameObject> objects = new ArrayList<GameObject>();
         objects.add(object1);
-        objects.add(object2);
+       /* objects.add(object2);
         objects.add(object3);
         objects.add(object4);
         objects.add(object5);
-        objects.add(object6);
+        objects.add(object6);*/
         renderer.InitializeObjects(objects);
     }
 
